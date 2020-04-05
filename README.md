@@ -24,6 +24,18 @@ http://localhost:15672
 Credentials:
 user:bitnami
 
+If credentials doesn't work:
+
+- get into the docker container:
+
+   docker exec -it rabbitmq-server bash
+
+- create your own manager user:
+
+   rabbitmqctl add_user <username> <password>
+   rabbitmqctl set_user_tags <username> administrator
+   rabbitmqctl set_permissions -p / <username> ".*" ".*" ".*"
+
 
 # Demonstration:
 
