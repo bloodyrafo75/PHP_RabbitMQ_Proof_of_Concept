@@ -1,0 +1,39 @@
+version: '3'
+services:
+  rabbitmq:
+    image: 'bitnami/rabbitmq:3.8'
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - "rabbitmq_data:/bitnami"
+    networks:
+      - net
+      
+  producer.web:
+    image: nginx:1.17
+    ports:
+      - 80:80
+    volumes:
+      - ./producer-php-code/web:/var/www/producer
+      - ./producer-php-code/docker-config/site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - net
+  php:
+    image: php:7.2-fpm
+    volumes:
+      - ./producer-php-code/web:/var/www/producer      
+      - ./consumer-php-code/web:/var/www/consumer      
+    networks:
+      - net
+      
+volumes:
+  rabbitmq_data:
+    driver: local
+
+networks:
+  net:
