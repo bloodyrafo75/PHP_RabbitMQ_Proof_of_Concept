@@ -7,7 +7,7 @@ Requirements:
 - free port 80 in localhost (you can change it in docker-composer.yml file)
 
 
-Install (Linux):
+# Install (Linux):
 - cd producer-php-code/web
 - composer install
 - cd ../..
@@ -18,14 +18,14 @@ Install (Linux):
 
 - docker-compose up -d
 
-Access to RabbitMQ web UI:
+# Access to RabbitMQ web UI:
 http://localhost:15672
 
 Credentials:
 user:bitnami
 
 
-Demonstration:
+# Demonstration:
 
 You can check 'fanout' or 'direct' modes
 If you want to broadcast to every client, use 'fanout' mode.
