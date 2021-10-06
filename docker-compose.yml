@@ -2,7 +2,7 @@ version: '3'
 services:
   rabbitmq:
     container_name: rabbitmq-server
-    image: 'bitnami/rabbitmq:3.8'
+    image: 'bitnami/rabbitmq:latest'
     ports:
       - '4369:4369'
       - '5672:5672'
@@ -17,13 +17,13 @@ services:
     networks:
       - net
       
-  producer.web:
+  rabbit.web:
     image: nginx:1.17
     ports:
-      - 80:80
+      - 81:80
     volumes:
-      - ./producer-php-code/web:/var/www/producer
-      - ./producer-php-code/docker-config/site.conf:/etc/nginx/conf.d/default.conf
+      - ./web-php-code/web:/var/www/thehole
+      - ./web-php-code/docker-config/site.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
     networks:
@@ -31,8 +31,7 @@ services:
   php:
     image: php:7.2-fpm
     volumes:
-      - ./producer-php-code/web:/var/www/producer      
-      - ./consumer-php-code/web:/var/www/consumer      
+      - ./web-php-code/web:/var/www/thehole
     networks:
       - net
       

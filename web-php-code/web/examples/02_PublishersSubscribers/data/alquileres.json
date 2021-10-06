@@ -1,0 +1,16 @@
+{
+  "ofertas": [
+    {
+      "tipo": "Casa",
+      "ubicacion": "Cádiz",
+      "mensualidad": "100€/m",
+      "descripcion": "Primera linea de playa"
+    },
+    {
+      "tipo": "Apartamento",
+      "ubicacion": "Cádiz",
+      "mensualidad": "80€/m",
+      "descripcion": "Piso interior. Centro"
+    }
+  ]
+}

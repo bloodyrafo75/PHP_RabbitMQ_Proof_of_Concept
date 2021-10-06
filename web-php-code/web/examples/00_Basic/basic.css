@@ -1,0 +1,12 @@
+
+body {
+    font-family: "arial";
+}
+.notification {
+    background-color: lightgrey;
+    color: #0c0c0c;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 30%;
+}
