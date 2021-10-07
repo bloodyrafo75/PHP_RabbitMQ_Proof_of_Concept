@@ -1,11 +1,11 @@
 <?php
-//Receiving messages selectively
+//Publisher confirmation.
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$exchangeName = "proveedor_selectivo_Ofertas_Exchange";
+$exchangeName = "Publish_with_confirmation";
 $host = "rabbitmq";
 $username = "basic_producer";
 $password = "1234";
@@ -17,24 +17,36 @@ $msgProperties = [
     'message_id' => uniqid(),
     'timestamp' => (new DateTime('now'))->getTimestamp(),
     'user_id' => $username,
-    'app_id' => '02_pubsubs',
+    'app_id' => '04_topics',
 ];
 $vhost = "basic_virtual_host";
 
 $connection = new AMQPStreamConnection($host, 5672, $username, $password, $vhost);
 $channel = $connection->channel();
+$channel->confirm_select();
+
+$channel->set_ack_handler(
+    function (AMQPMessage $message) {
+        echo "\nACK Mensaje confirmado\n";
+    }
+);
+
+$channel->set_nack_handler(
+    function (AMQPMessage $message) {
+        echo "\nNACK Problemas en el envío del mensaje\n";
+    }
+);
+
 $channel->exchange_declare($exchangeName, 'direct', false, true, false);
 
 
-$script = file_get_contents(__DIR__ . "/data/alquileres.json");
-$sentences = json_decode($script, true);
-foreach ($sentences["ofertas"] as $msg) {
-    $offerString = json_encode($msg);
-    $AMQPMsg = new AMQPMessage($offerString, $msgProperties);
-    $key = (!strpos($msg["descripcion"], "playa")) ? "playa" : "centro";
-    $channel->basic_publish($AMQPMsg, $exchangeName, $key);
-    echo "\n Offer sent: '" . $offerString . "'";
-}
+$msg = 'Mensaje a confirmar';
+$AMQPMsg = new AMQPMessage($msg, $msgProperties);
+$channel->basic_publish($AMQPMsg, $exchangeName);
+echo "\nMsg sent: '" . $msg . "'";
+
+$channel->wait_for_pending_acks(5.000);
+
 
 $channel->close();
 $connection->close();

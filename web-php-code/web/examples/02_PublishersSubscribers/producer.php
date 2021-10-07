@@ -1,4 +1,5 @@
 <?php
+//Sending messages to many consumers at once
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -26,10 +27,8 @@ $vhost = "basic_virtual_host";
 $connection = new AMQPStreamConnection($host, 5672, $username, $password, $vhost);
 $channel = $connection->channel();
 $channel->exchange_declare($exchangeName, 'fanout', false, true, false);
-
 $channel->queue_declare($queueNameA, false, true, false, false);
 $channel->queue_declare($queueNameB, false, true, false, false);
-
 $channel->queue_bind($queueNameA, $exchangeName);
 $channel->queue_bind($queueNameB, $exchangeName);
 
@@ -42,7 +41,6 @@ foreach ($sentences["ofertas"] as $msg) {
     $AMQPMsg = new AMQPMessage($offerString, $msgProperties);
     $channel->basic_publish($AMQPMsg, $exchangeName);
     echo "\n Offer sent: '" . $offerString . "'";
-    //sleep(3);
 }
 
 $channel->close();

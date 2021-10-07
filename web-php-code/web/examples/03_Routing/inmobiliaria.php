@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-$keysToRecover = array_slice($argv, 1);;
+$keysToRecover = array_slice($argv, 1);
 
 $queueName = "API_Inmobiliaria";
 $host = "rabbitmq";

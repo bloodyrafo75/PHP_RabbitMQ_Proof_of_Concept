@@ -1,6 +1,5 @@
-
 <?php
-
+//Distributing tasks among workers
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
