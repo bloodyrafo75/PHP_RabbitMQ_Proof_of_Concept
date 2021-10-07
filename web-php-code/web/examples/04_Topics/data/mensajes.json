@@ -1,0 +1,36 @@
+{
+  "mensajes": [
+    {
+      "tipo": "info.log",
+      "mensaje": "Mensaje sin importancia 1"
+    },
+    {
+      "tipo": "info.log",
+      "mensaje": "Mensaje sin importancia 2"
+    },
+    {
+      "tipo": "info.log",
+      "mensaje": "Mensaje sin importancia 3"
+    },
+    {
+      "tipo": "important.log",
+      "mensaje": "INFORMACION URGENTE"
+    },
+    {
+      "tipo": "info.log",
+      "mensaje": "Mensaje sin importancia 4"
+    },
+    {
+      "tipo": "info.log",
+      "mensaje": "Mensaje sin importancia 5"
+    },
+    {
+      "tipo": "info.log",
+      "mensaje": "Mensaje sin importancia 6"
+    },
+    {
+      "tipo": "important.log",
+      "mensaje": "INFORMACION URGENTE 2"
+    }
+  ]
+}

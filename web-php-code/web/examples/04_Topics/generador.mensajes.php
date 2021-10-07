@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$exchangeName = "proveedor_selectivo_Ofertas_Exchange";
+$exchangeName = "Mensajes_Systema_Exchange";
 $host = "rabbitmq";
 $username = "basic_producer";
 $password = "1234";
@@ -17,24 +17,23 @@ $msgProperties = [
     'message_id' => uniqid(),
     'timestamp' => (new DateTime('now'))->getTimestamp(),
     'user_id' => $username,
-    'app_id' => '02_pubsubs',
+    'app_id' => '04_topics',
 ];
 $vhost = "basic_virtual_host";
 
 $connection = new AMQPStreamConnection($host, 5672, $username, $password, $vhost);
 $channel = $connection->channel();
-$channel->exchange_declare($exchangeName, 'direct', false, true, false);
+$channel->exchange_declare($exchangeName, 'topic', false, true, false);
 
 
 
-$script = file_get_contents(__DIR__ . "/data/alquileres.json");
+$script = file_get_contents(__DIR__ . "/data/mensajes.json");
 $sentences = json_decode($script, true);
-foreach ($sentences["ofertas"] as $msg) {
-    $offerString = json_encode($msg);
-    $AMQPMsg = new AMQPMessage($offerString, $msgProperties);
-    $key = (false != strpos($msg["descripcion"], "playa")) ? "playa" : "centro";
+foreach ($sentences["mensajes"] as $msg) {
+    $AMQPMsg = new AMQPMessage($msg["mensaje"], $msgProperties);
+    $key = $msg["tipo"];
     $channel->basic_publish($AMQPMsg, $exchangeName, $key);
-    echo "\n Offer sent: '" . $offerString . "'";
+    echo "\nMsg sent: '" . $msg["mensaje"] . "'";
     //sleep(3);
 }
 
